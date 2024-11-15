@@ -1,0 +1,28 @@
+---
+title: "Assignment 2"
+author: "M Hill"
+date: "2024-10-07"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(readxl)
+```
+
+## Exercise 1
+```{r}
+data <- read_excel('data-raw/Example_5.xls', sheet=2, range = 'A5:C36')
+str(data)
+```
+I focused the range in the excel sheet just on the values I needed.
+
+## Exercise 2
+```{r}
+data2 <- read_excel('data-raw/Example_3.xls', sheet = 2, range = 'A1:L34', na = c('NA', -9999))
+
+tail(data2)
+```
+I had to specify the range of the data within the excel sheet. Then using na I specified that 'NA' and -9999 represented missing values.
+
+
+

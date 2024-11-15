@@ -1,0 +1,24 @@
+---
+title: "Assignment 7"
+author: "M. Hill"
+date: "11/8/2024"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(cowplot)
+```
+
+## Exercise 2
+```{r}
+
+trees.model <- lm(Volume ~ Height, data= trees)
+summary(trees.model)
+trees %>%
+  ggplot(aes(x = Height, y = Volume, color = Girth)) +
+  geom_point() +
+  scale_color_viridis_c(option = 'plasma')
+
+
+```
+

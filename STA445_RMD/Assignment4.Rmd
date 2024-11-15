@@ -1,0 +1,98 @@
+---
+title: "Assignment 4"
+author: "M. Hill"
+date: "10/21/2024"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+## Exercise 1
+a) This regular expression matches: 
+Strings that contain 'ab' in that order only.
+```{r}
+strings <- c('ab','acb','cab','bac')
+data.frame( string = strings ) %>%
+  mutate( result = str_detect(string, 'ab') )
+```
+
+b) This regular expression matches:
+Strings that contain 'a' or 'b'.
+```{r}
+strings <- c('bat','did','goa','less')
+data.frame( string = strings ) %>%
+  mutate( result = str_detect(string, '[ab]') )
+```
+
+c) This regular expression matches:
+Strings that contain 'a' or 'b' at the beginning.
+```{r}
+strings <- c('boy','goal','apple','labs')
+data.frame( string = strings ) %>%
+  mutate( result = str_detect(string, '^[ab]') )
+```
+
+d) This regular expression matches:
+Strings that contains one or more repetition of a digit, then a whitespace, then
+'a' or 'A'.
+```{r}
+strings <- c('525 A', 'aa a', '2 a','2A')
+data.frame( string = strings ) %>%
+  mutate( result = str_detect(string, '\\d+\\s[aA]') )
+```
+
+e) This regular expression matches:
+Strings that contain one or more repetitions of a digit, then zero or more 
+repetitions of a white space, then a or A.
+```{r}
+strings <- c('HOUSE:3A','HOUSE:3 ',' NO 3 HOUSE:3A','4davros A')
+data.frame( string = strings ) %>%
+  mutate( result = str_detect(string, '\\d+\\s*[aA]') )
+```
+
+f) This regular expression matches:
+Strings that contain zero or more repetitions of any character.
+```{r}
+strings <- c('','superpowerflowerpollen2','45','&&')
+data.frame( string = strings ) %>%
+  mutate( result = str_detect(string, '.*') )
+```
+
+g) This regular expression matches:
+Strings that start with two repetitions of any alphanumeric character and 'bar' exactly
+```{r}
+strings <- c('22bar','Aebar','AAbaer','barYES!')
+data.frame( string = strings ) %>%
+  mutate( result = str_detect(string, '^\\w{2}bar') )
+```
+
+h) This regular expression matches:
+Strings that contain the group contain 'foo', then a period, followed by 'bar',
+or the string starts with two repetitions of any alphanumeric character and 'bar' exactly.
+```{r}
+strings <- c('AAfoo.bar','anaownwko foobar','76barfoo.9','A2foobar')
+data.frame( string = strings ) %>%
+  mutate( result = str_detect(string, '(foo\\.bar)|(^\\w{2}bar)') )
+```
+
+## Exercise 2
+```{r}
+file.names <- c( 'S123.P2.C10_20120621_213422.jpg',
+                 'S10.P1.C1_20120622_050148.jpg',
+                 'S187.P2.C2_20120702_023501.jpg')
+temp <- data.frame(site = str_extract(file.names, 'S\\d+'),
+    plot = str_extract(file.names, 'P\\d+')
+  )
+
+temp
+```
+
+
+
+
+
+
+
+

@@ -1,0 +1,113 @@
+---
+title: "Assignment 5"
+author: "M. Hill"
+date: "10/28/2024"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(lubridate)
+library(tidyverse)
+library(mosaicData)
+```
+
+## Exercise 1
+a)
+```{r}
+mdy("September 13, 2010")
+```
+b)
+```{r}
+mdy("Sept 13, 2010")
+```
+c)
+```{r}
+mdy("Sep 13, 2010")
+```
+d)
+```{r}
+mdy("S 13, 2010")
+```
+Abbreviations of months need to be the first three letters of the month.
+
+e)
+```{r}
+mdy("07-Dec-1941")
+```
+f)
+```{r}
+mdy("1-5-1998")
+```
+Using single digits for both the month and day makes it hard to know which is the
+month or day.
+
+g)
+```{r}
+dmy("21-5-1998")
+```
+It is clear to see which is the day, and which is the month.
+h)
+```{r}
+ymd_hm("2020-May-5 10:30 am")
+```
+i)
+```{r}
+ymd_hm("2020-May-5 10:30 am PDT (ex Seattle)")
+```
+j)
+```{r}
+ymd_hm("2020-May-5 10:30 am AST (ex Puerto Rico)")
+```
+
+## Exercise 3
+```{r}
+dates <- c("May-8-2025 3:00 PM","May-8-2025 3:00 PM")
+zones <- c("US/Arizona","Pacific/Auckland")
+data.frame(date = dates, zone = zones) %>%
+  rowwise() %>%
+  mutate(date = mdy_hm(date,tz = zone))
+```
+After finding what the tz identifier was for Auckland, New zealand. I applied
+each timezone rowwise as only a single timezone can be sent to the dates vector.
+
+## Exercise 5
+a)
+```{r}
+births1 <- Births78 %>%
+  select(date,births)
+
+```
+b)
+```{r}
+births1 %>%
+  ggplot(aes(x = date, y = births)) +
+  geom_point()
+```
+There are almost two graphs, it seems consistently there are certain days
+which have much more births than other days. I think it might be people having 
+kids on weekends.
+
+C)
+```{r}
+births2 <- births1 %>%
+  mutate(dow = wday(date, label=TRUE, abbr=FALSE))
+```
+d)
+```{r}
+births2 %>%
+  ggplot(aes(x = date, y = births)) +
+  geom_point(aes(color = dow))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

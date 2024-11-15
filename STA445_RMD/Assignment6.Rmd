@@ -1,0 +1,123 @@
+---
+title: "Assignment 6"
+author: "M. Hill"
+date: "11/4/2024"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(nycflights13)
+```
+
+## Exercise 1
+a)
+```{r}
+Survey <- read.csv('https://www.lock5stat.com/datasets2e/StudentSurvey.csv', na.strings=c('',' ')) 
+```
+
+b)
+```{r}
+Survey1 <- Survey %>%
+  select(Year, Gender) %>%
+  mutate(
+    Year = factor(Year, labels = c('FirstYear','Sophmore','Junior','Senior')),
+    Gender = factor(ifelse(Gender == 'M','Male','Female'))
+
+  )
+Survey1
+```
+c)
+```{r}
+Survey2 <- Survey1 %>% 
+  group_by(Year,Gender) %>%
+  count() %>%
+  drop_na()
+Survey2
+```
+d)
+```{r}
+Survey2 %>%
+  pivot_wider(names_from = Year, values_from = n)
+```
+
+## Exercise 2
+a)
+```{r}
+temperatureData <- read.csv('https://raw.githubusercontent.com/BuscagliaR/STA_444_v2/master/data-raw/FlagMaxTemp.csv')
+
+temperatureData %>%
+  filter(Year == 2005) %>%
+  pivot_longer(X1:X31,names_to = 'Day', values_to = 'Temperature') %>%
+  drop_na() %>%
+  mutate(Day = str_extract(Day,"\\d+"),
+         Date = ymd(str_c(Year,Month,Day, sep = "-"))) %>%
+  ggplot(aes(x = Date, y = Temperature)) +
+  geom_line()
+
+```
+b)
+```{r}
+temperatureData %>%
+  filter(Year > 2012 & Year < 2016) %>%
+  pivot_longer(X1:X31,names_to = 'Day', values_to = 'Temperature') %>%
+  drop_na() %>%
+  mutate(Day = str_extract(Day,"\\d+")) %>%
+  group_by(Year,Month) %>%
+  summarise(Temperature = mean(Temperature)) %>%
+  mutate(Date = ym(str_c(Year,Month,sep = "-"))) %>%
+  ggplot(aes(x = Date, y = Temperature)) +
+  geom_line()
+
+  
+```
+
+## Exercise 3
+```{r}
+A <- tribble(
+  ~Name, ~Car,
+  'Alice', 'Ford F150',
+  'Bob',   'Tesla Model III',
+  'Charlie', 'VW Bug')
+
+B <- tribble(
+  ~First.Name, ~Pet,
+  'Bob',  'Cat',
+  'Charlie', 'Dog',
+  'Alice', 'Rabbit')
+```
+a)
+```{r}
+inner_join(A,B, by = c("Name" = "First.Name"))
+```
+b)
+```{r}
+B <- add_row(B,First.Name = 'Alice', Pet = 'Guinea Pig')
+```
+c)
+```{r}
+full_join(A,B, by = c("Name" = "First.Name"))
+```
+
+## Exercise 4
+```{r}
+data('flights', package = 'nycflights13')
+data('airlines', package = 'nycflights13')
+data('airports', package = 'nycflights13')
+flights <- flights %>%
+  filter(month == 2 & day == 14 & carrier == 'VX')
+left_join(flights,airports, by = c("dest" = "faa"))
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
